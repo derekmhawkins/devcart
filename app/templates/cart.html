@@ -1,0 +1,66 @@
+{% extends 'layout.html' %}
+{% block title %}{{ title }} | {{ super() }}{% endblock %}
+
+{% block app_content %}
+  <div class="col-md-12">
+    <h1>{{ title }}</h1>
+    <table id="cart" class="table table-hover table-condensed">
+      <thead>
+        <tr>
+          <th style="width:50%">Product</th>
+          <th style="width:10%">Price</th>
+          <th style="width:8%">Quantity</th>
+          <th style="width:22%" class="text-center">Subtotal</th>
+          <th style="width:10%"></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for k,v in display_cart.items() %}
+        <tr>
+          <td data-th="Product">
+            <div class="row">
+              <div class="col-sm-2 hidden-xs">
+                <img src="../static/products/uploads/{{ v["image"] }}" alt="{{ v["name"] }}" class="img-responsive" />
+              </div>
+              <div class="col-sm-10">
+                <h4 class="nomargin">{{ v["name"] }}</h4>
+              </div>
+            </div>
+          </td>
+          <td data-th="Price">{{ "${:.2f}".format(v["price"]) }}</td>
+          <td data-th="Quantity">{{ v["qty"] }}</td>
+          <td data-th="Subtotal" class="text-center">{{ "${:.2f}".format(v["price"]) }}</td>
+          <td class="actions" data-th="">
+            <button class="btn btn-danger btn-lg pull-right">
+              <i class="glyphicon glyphicon-trash"></i>
+            </button>
+          </td>
+        </tr>
+      {% endfor %}
+      </tbody>
+      <tfoot>
+        <tr class="visible-xs">
+          <td class="text-center">
+            <strong>{{ display_cart.totalPrice }}</strong>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <a href="{{ url_for('index') }}" class="btn btn-warning">
+              <i class="glyphicon glyphicon-chevron-left"></i> Continue Shopping</a>
+          </td>
+          <td colspan="2" class="hidden-xs"></td>
+          <td class="hidden-xs text-center">
+            <strong>{{ "${:.2f}".format(total) }}</strong>
+          </td>
+          <td>
+            <a href="#" class="btn btn-success btn-block">Checkout
+              <i class="fa fa-angle-right"></i>
+            </a>
+          </td>
+        </tr>
+      </tfoot>
+    </table>
+    </div>
+  </div>
+{% endblock %}

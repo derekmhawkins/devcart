@@ -1,0 +1,11 @@
+.navbar {
+  border-radius: 0px;
+}
+
+.product img {
+  max-width: 165px;
+}
+
+.product .description {
+  max-width: 125px;
+}
