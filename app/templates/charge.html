@@ -1,0 +1,8 @@
+{% extends 'layout.html' %}
+{% block title %}{{ title }} | {{ super() }}{% endblock %}
+
+{% block app_content %}
+  <div class="col-md-12">
+    <h2>Thank you. You paid ${{ totalCharge }}.</h2>
+  </div>
+{% endblock %}

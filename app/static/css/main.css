@@ -9,3 +9,12 @@
 .product .description {
   max-width: 125px;
 }
+
+footer {
+  background-color: #101010;
+  margin-top: 30px;
+}
+
+footer .content {
+  padding: 30px 25px;
+}

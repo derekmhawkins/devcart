@@ -4,7 +4,7 @@
 
 {% block styles %}
 {{ super() }}
-<link rel="stylesheet" href="/static/css/main.css">
+<link rel="stylesheet" href="{{ url_for('.static', filename='css/main.css') }}">
 {% endblock %}
 
 {% block navbar %}
@@ -39,22 +39,38 @@
 {% endblock %}
 
 {% block content %}
-<div class="container">
-  {% with messages = get_flashed_messages() %}
-    {% if messages %}
-      {% for message in messages %}
-        <div class="alert alert-info">
-          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-          <strong>{{ message }}</strong>
-        </div>
-      {% endfor %}
-    {% endif %}
-  {% endwith %}
-  
-  <!-- Bootstrap Stuff -->
-  {% block app_content %}
-  {% endblock %}
-  <!-- Bootstrap Stuff -->
+  <div class="container">
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        {% for message in messages %}
+          <div class="alert alert-info">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            <strong>{{ message }}</strong>
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+    
+    <!-- Bootstrap Stuff -->
+    {% block app_content %}
+    {% endblock %}
+    <!-- Bootstrap Stuff -->
+  </div>
+  <footer>
+    <div class="container">
+      <div class="col-md-4  content">
+        <p>Dolor aliqua culpa pariatur Lorem commodo nostrud sit veniam. Nulla est et adipisicing elit excepteur voluptate cupidatat duis commodo nostrud elit et cillum. Eiusmod pariatur sunt sit ea ipsum incididunt aute et voluptate amet. Occaecat Lorem mollit minim amet ut laboris mollit quis sit qui. Veniam nostrud proident tempor ad dolore eu fugiat fugiat Lorem id cupidatat eiusmod nisi. Lorem id amet fugiat velit magna mollit nostrud ipsum.</p>
+      </div>
+      <div class="col-md-4  content">
+        <p>Consequat id eu adipisicing enim. Veniam aliquip dolore dolor aliquip. Non aute deserunt cillum in laboris fugiat sit amet in minim. Voluptate ea amet veniam sint est id irure nisi et consequat culpa laboris. Quis fugiat elit cillum eu officia voluptate fugiat laboris minim proident adipisicing proident et aliqua. Tempor ipsum pariatur aliqua incididunt.</p>
+      </div>
+      <div class="col-md-4  content">
+        <p>Consequat officia pariatur dolor mollit nisi esse laboris. Duis enim ipsum veniam deserunt proident ex ipsum proident. Velit dolor enim enim ex. Irure excepteur est qui eu. Irure officia ipsum ut proident ea excepteur ea cupidatat quis commodo.</p>
+      </div>
+    </div>
+  </footer>
 
-</div>
+{% endblock %}
+{% block scripts %}
+{{ super() }}
 {% endblock %}

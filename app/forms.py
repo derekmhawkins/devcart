@@ -39,3 +39,17 @@ class ProductForm(FlaskForm):
     product = Product.query.filter_by(name=name.data).first()
     if product is not None:
       raise ValidationError("Product already exists")
+
+class CheckoutForm(FlaskForm):
+  # first_name = StringField("First Name", validators=[DataRequired()])
+  # last_name = StringField("Last Name", validators=[DataRequired()])
+  # street_address = StringField("Address Line 1", validators=[DataRequired()])
+  # extended_address = StringField("Address Line 2", validators=[DataRequired()])
+  # locality = StringField("City", validators=[DataRequired()])
+  # postal_code = IntegerField("Zip", validators=[DataRequired()])
+  # credit_card = IntegerField("Card Number", validators=[DataRequired()])
+  # cardholder_name = StringField("Name on Card", validators=[DataRequired()])
+  # cvv = IntegerField("CVV", validators=[DataRequired()])
+  # expiration_date = StringField("Expiration: MM/YY", validators=[DataRequired()])
+  amount = DecimalField("Amount", validators=[DataRequired()])
+  submit = SubmitField("Pay Now")

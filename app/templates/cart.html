@@ -31,9 +31,9 @@
           <td data-th="Quantity">{{ v["qty"] }}</td>
           <td data-th="Subtotal" class="text-center">{{ "${:.2f}".format(v["price"]) }}</td>
           <td class="actions" data-th="">
-            <button class="btn btn-danger btn-lg pull-right">
+            <a href="/delete_item/{{ v["id"] }}" class="btn btn-danger btn-lg pull-right">
               <i class="glyphicon glyphicon-trash"></i>
-            </button>
+            </a>
           </td>
         </tr>
       {% endfor %}
@@ -54,7 +54,7 @@
             <strong>{{ "${:.2f}".format(total) }}</strong>
           </td>
           <td>
-            <a href="#" class="btn btn-success btn-block">Checkout
+            <a href="/checkout" class="btn btn-success btn-block">Checkout
               <i class="fa fa-angle-right"></i>
             </a>
           </td>

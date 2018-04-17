@@ -29,7 +29,8 @@
       <p class="description">{{ p.name }}</p>
       <div class="text-center">
         {% if current_user.admin %}
-          <a href="/delete_item/{{ p.id }}" class="btn btn-danger">Delete</a>
+          <a href="" class="btn btn-danger">Delete</a>
+          <!-- <a href="/delete_item/{{ p.id }}" class="btn btn-danger">Delete</a> -->
         {% else %}
           <a href="/add_to_cart/{{ p.id }}" class="btn btn-success">Add to Cart</a>
         {% endif %}

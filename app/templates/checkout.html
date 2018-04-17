@@ -1,0 +1,61 @@
+{% extends 'layout.html' %}
+{% block title %}{{ title }} | {{ super() }}{% endblock %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+
+{% block app_content %}
+  <div class="col-md-4 col-md-offset-4">
+    {{ wtf.quick_form(form) }}
+  </div>
+{% endblock %}
+
+<script>
+</script>
+{% block scripts %}
+{{ super() }}
+<script>
+  $('#amount').attr('value', "{{ amount }}");
+  $('#amount').attr('readonly', true);
+  $('form').attr('action', "{{ url_for('charge') }}");
+  var s = $(document.createElement('script')).attr({
+    id: 'stripe',
+    type: 'text/javascript',
+    src: 'https://checkout.stripe.com/checkout.js',
+    class: 'stripe-button',
+    'data-key': '{{ key }}',
+    'data-description': 'A test charge',
+    'data-amount': '{{ amount * 100}}',
+    'data-locale': 'auto'
+  });
+  $('#submit').before(s);
+  $('#stripe').text('Pay Now');
+</script>
+<!-- <script src="https://checkout.stripe.com/checkout.js"></script> -->
+<!-- <script>
+  $('#amount').attr('value', "{{ paymentTotal }}");
+  $('#amount').attr('readonly', true);
+  $('form').attr('action', "{{ url_for('charge') }}");
+</script>
+<script>  
+  var handler = StripeCheckout.configure({
+    key: '{{ key }}',
+    image: 'https://stripe.com/img/documentation/checkout/marketplace.png',
+    locale: 'auto',
+    token: token => {
+      console.log(`${token.id}\n${token.email}`);
+      return token.id;
+    }
+  });
+  $('#submit').on('click', e => {
+    handler.open({
+      name: 'Checkout',
+      description: 'Test Payment',
+      amount: parseFloat('{{ amount * 100 }}')
+    });
+    e.preventDefault();
+  });
+  $('window').on('popstate', () => {
+    handler.close();
+  });
+</script> -->
+{% endblock %}
