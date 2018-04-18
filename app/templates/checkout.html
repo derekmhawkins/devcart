@@ -13,7 +13,7 @@
 </script>
 {% block scripts %}
 {{ super() }}
-<script>
+<!-- <script>
   $('#amount').attr('value', "{{ amount }}");
   $('#amount').attr('readonly', true);
   $('form').attr('action', "{{ url_for('charge') }}");
@@ -29,12 +29,19 @@
   });
   $('#submit').before(s);
   $('#stripe').text('Pay Now');
-</script>
-<!-- <script src="https://checkout.stripe.com/checkout.js"></script> -->
-<!-- <script>
-  $('#amount').attr('value', "{{ paymentTotal }}");
+</script> -->
+<script src="https://checkout.stripe.com/checkout.js"></script>
+<script>
+  $('#amount').attr('value', "{{ '{:.2f}'.format(paymentTotal) }}");
   $('#amount').attr('readonly', true);
   $('form').attr('action', "{{ url_for('charge') }}");
+  $('#submit').attr('type', 'button');
+  var paymentForm = $('form').attr('action', '/charge');
+  $(paymentForm).attr('id', 'paymentForm');
+  var submitBtn = $('input#submit').attr('value', 'Pay Now');
+  $(submitBtn).attr('name', 'submit2')
+              .attr('id', 'submit2');
+  console.log(submitBtn);
 </script>
 <script>  
   var handler = StripeCheckout.configure({
@@ -42,20 +49,22 @@
     image: 'https://stripe.com/img/documentation/checkout/marketplace.png',
     locale: 'auto',
     token: token => {
-      console.log(`${token.id}\n${token.email}`);
-      return token.id;
+      $(paymentForm).attr('id', 'paymentForm')
+      $('#stripeToken').val(token.id);
+      $('#stripeEmail').val(token.email);
+      $('#paymentForm').submit();
     }
   });
-  $('#submit').on('click', e => {
+  $('#submit2').on('click', e => {
     handler.open({
-      name: 'Checkout',
+      name: 'DevCart',
       description: 'Test Payment',
       amount: parseFloat('{{ amount * 100 }}')
     });
     e.preventDefault();
   });
-  $('window').on('popstate', () => {
+  $(window).on('popstate', () => {
     handler.close();
   });
-</script> -->
+</script>
 {% endblock %}

@@ -8,6 +8,8 @@ import os, random
 from werkzeug.utils import secure_filename
 import stripe
 from app.stripe import stripe_keys
+import time
+from decimal import Decimal
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -51,7 +53,7 @@ def add_item(id):
 
 @app.route('/cart')
 def cart():
-  if "cart" not in session or "cart" is None:
+  if "cart" not in session:
     flash("There's nothing in your cart... yet")
     return render_template('cart.html', title='My Cart', display_cart={}, total=0)
   items = session["cart"]
@@ -68,7 +70,15 @@ def cart():
   session["shopping_cart"] = dict_of_items
   return render_template("cart.html", display_cart=dict_of_items, total=totalPrice, title="My Cart")
 
-@app.route('/checkout', methods=['GET'])
+
+@app.route('/clear')
+def clear_cart():
+  session["cart"].clear()
+  flash("All items removed from cart")
+  return redirect(url_for('cart'))
+
+
+@app.route('/checkout', methods=['GET', 'POST'])
 def checkout():
   context = {
     "title": "Checkout",
@@ -77,31 +87,34 @@ def checkout():
     "key": stripe_keys['publishable_key'][2:]
   }
   amount = context['paymentTotal']
+  if context['form'].validate_on_submit():
+    return redirect(url_for('charge'))
   return render_template('checkout.html', **context, amount=amount)
 
 
 @app.route('/charge', methods=['GET ', 'POST'])
 def charge():
-  cart = session.get("cart", None)
-  cart.clear()
-  print(request.form)
-
   def convert_to_cents(dollar_amount):
-    conversion = dollar_amount * 100
-    # return "{:.2f}".format(conversion)
-    return int(conversion)
+    return round(dollar_amount * 100)
 
   amount = session.get("paymentTotal", None)
+  token = request.form['stripeToken']
+
   customer = stripe.Customer.create(
     email=request.form['stripeEmail'],
-    source=request.form['stripeToken']
+    source=token
   )
   charge = stripe.Charge.create(
     customer=customer.id,
     amount=convert_to_cents(amount),
     currency='usd',
-    description='Test Charge'
+    description='Test Charge',
+    source=token,
+    statement_descriptor='DevCart',
+    capture=False,
+    metadata={'order_id': int(time.time())}
   )
+  # print(request.form)
   return render_template("charge.html", totalCharge=session.get("paymentTotal", None))
 
 
